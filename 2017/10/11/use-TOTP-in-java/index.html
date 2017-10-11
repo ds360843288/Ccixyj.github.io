@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 业务 | 徐宇健的博客</title>
+  <title>TOTP（基于时间的一次性密码算法） | 徐宇健的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="个人博客,在此记录下生命的点滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="徐宇健的博客">
-<meta property="og:url" content="http://yoursite.com/tags/业务/index.html">
+  <meta name="description" content="今天看到一个有趣的问题： 支付宝和微信的付款没网络时也可以支付是怎么做到的？微信和支付宝的脱机二维码实现原理？   了解到了这种算法:TOTP基于时间的一次性密码算法这种算法广泛用于两步验证中。">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TOTP（基于时间的一次性密码算法）">
+<meta property="og:url" content="http://yoursite.com/2017/10/11/use-TOTP-in-java/index.html">
 <meta property="og:site_name" content="徐宇健的博客">
-<meta property="og:description" content="个人博客,在此记录下生命的点滴">
+<meta property="og:description" content="今天看到一个有趣的问题： 支付宝和微信的付款没网络时也可以支付是怎么做到的？微信和支付宝的脱机二维码实现原理？   了解到了这种算法:TOTP基于时间的一次性密码算法这种算法广泛用于两步验证中。">
+<meta property="og:updated_time" content="2017-10-11T07:09:08.154Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="徐宇健的博客">
-<meta name="twitter:description" content="个人博客,在此记录下生命的点滴">
+<meta name="twitter:title" content="TOTP（基于时间的一次性密码算法）">
+<meta name="twitter:description" content="今天看到一个有趣的问题： 支付宝和微信的付款没网络时也可以支付是怎么做到的？微信和支付宝的脱机二维码实现原理？   了解到了这种算法:TOTP基于时间的一次性密码算法这种算法广泛用于两步验证中。">
   
     <link rel="alternative" href="/atom.xml" title="徐宇健的博客" type="application/atom+xml">
   
@@ -146,60 +148,175 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-use-TOTP-in-java" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/28/blog-prevent-duplicate-request/" class="archive-article-date">
-  	<time datetime="2017-09-28T09:07:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-28</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/28/blog-prevent-duplicate-request/">app中重复请求的问题</a>
+    <h1 class="article-title" itemprop="name">
+      TOTP（基于时间的一次性密码算法）
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2017/10/11/use-TOTP-in-java/" class="archive-article-date">
+  	<time datetime="2017-10-11T06:17:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天看到一个有趣的问题：</p>
+<p><a href="https://www.zhihu.com/question/49811134?sort=created" target="_blank" rel="external">支付宝和微信的付款没网络时也可以支付是怎么做到的？</a><br><a href="https://www.v2ex.com/t/396503#reply44" target="_blank" rel="external">微信和支付宝的脱机二维码实现原理？</a>  </p>
+<p>了解到了这种算法:TOTP基于时间的一次性密码算法<br>这种算法广泛用于两步验证中。</p>
+<a id="more"></a>
+<p>可以先看一下定义：</p>
+<blockquote>
+<p>维基百科：<a href="http://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm" target="_blank" rel="external">http://en.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm</a></p>
+<p>RFC 6238：<a href="http://tools.ietf.org/html/rfc6238" target="_blank" rel="external">http://tools.ietf.org/html/rfc6238</a></p>
+</blockquote>
+<hr>
+<p>先决条件：</p>
+<blockquote>
+<p>1）Prover与Verifier之间必须时钟同步；</p>
+<p>2）Prover与Verifier之间必须共享密钥；</p>
+<p>3）Prover与Verifier之间必须使用相同的时间步长</p>
+</blockquote>
+<p>算法变量（查看下面的代码）：</p>
+<blockquote>
+<p>K 共享密钥</p>
+<p>T 时间</p>
+<p>T0 开始计数的时间步长</p>
+<p>X 时间步长</p>
+</blockquote>
+<p>原理：<br>首先确保先决条件后考虑：  </p>
+<ol>
+<li>客户端和服务器事先协商好一个密钥K，用于一次性密码的生成过程</li>
+<li>获取当前时间<code>currentTime</code>，并计算 <code>T = (currentTime-T0)/X</code>，取得<code>T</code>的值后在根据该算法算出对应的密钥。 </li>
+</ol>
+<p>公式：</p>
+<h3 id="TOTP-Truncate-HMAC-SHA-1-K-T-T0-X"><a href="#TOTP-Truncate-HMAC-SHA-1-K-T-T0-X" class="headerlink" title="TOTP = Truncate(HMAC-SHA-1(K, (T - T0) / X))"></a>TOTP = Truncate(HMAC-SHA-1(K, (T - T0) / X))</h3><p>实现代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">Copyright (c) 2011 IETF Trust and the persons identified as</span></div><div class="line"><span class="comment">authors of the code. All rights reserved.</span></div><div class="line"><span class="comment"></span></div><div class="line"><span class="comment">Redistribution and use in source and binary forms, with or without</span></div><div class="line"><span class="comment">modification, is permitted pursuant to, and subject to the license</span></div><div class="line"><span class="comment">terms contained in, the Simplified BSD License set forth in Section</span></div><div class="line"><span class="comment">4.c of the IETF Trust's Legal Provisions Relating to IETF Documents</span></div><div class="line"><span class="comment">(http://trustee.ietf.org/license-info).</span></div><div class="line"><span class="comment"> */</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> java.lang.reflect.UndeclaredThrowableException;</div><div class="line"><span class="keyword">import</span> java.security.GeneralSecurityException;</div><div class="line"><span class="keyword">import</span> java.text.DateFormat;</div><div class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</div><div class="line"><span class="keyword">import</span> java.util.Date;</div><div class="line"><span class="keyword">import</span> javax.crypto.Mac;</div><div class="line"><span class="keyword">import</span> javax.crypto.spec.SecretKeySpec;</div><div class="line"><span class="keyword">import</span> java.math.BigInteger;</div><div class="line"><span class="keyword">import</span> java.util.TimeZone;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * This is an example implementation of the OATH TOTP algorithm. Visit</span></div><div class="line"><span class="comment"> * www.openauthentication.org for more information.</span></div><div class="line"><span class="comment"> * </span></div><div class="line"><span class="comment"> * <span class="doctag">@author</span> Johan Rydell, PortWise, Inc.</span></div><div class="line"><span class="comment"> */</span></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TOTP</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TOTP</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * This method uses the JCE to provide the crypto algorithm. HMAC computes a</span></div><div class="line"><span class="comment">     * Hashed Message Authentication Code with the crypto hash algorithm as a</span></div><div class="line"><span class="comment">     * parameter.</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> crypto</span></div><div class="line"><span class="comment">     *            : the crypto algorithm (HmacSHA1, HmacSHA256, HmacSHA512)</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> keyBytes</span></div><div class="line"><span class="comment">     *            : the bytes to use for the HMAC key</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> text</span></div><div class="line"><span class="comment">     *            : the message or text to be authenticated</span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] hmac_sha(String crypto, <span class="keyword">byte</span>[] keyBytes, <span class="keyword">byte</span>[] text) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Mac hmac;</div><div class="line">            hmac = Mac.getInstance(crypto);</div><div class="line">            SecretKeySpec macKey = <span class="keyword">new</span> SecretKeySpec(keyBytes, <span class="string">"RAW"</span>);</div><div class="line">            hmac.init(macKey);</div><div class="line">            <span class="keyword">return</span> hmac.doFinal(text);</div><div class="line">        &#125; <span class="keyword">catch</span> (GeneralSecurityException gse) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UndeclaredThrowableException(gse);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * This method converts a HEX string to Byte[]</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> hex</span></div><div class="line"><span class="comment">     *            : the HEX string</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span>: a byte array</span></div><div class="line"><span class="comment">     */</span></div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] hexStr2Bytes(String hex) &#123;</div><div class="line">        <span class="comment">// Adding one byte to get the right conversion</span></div><div class="line">        <span class="comment">// Values starting with "0" can be converted</span></div><div class="line">        <span class="keyword">byte</span>[] bArray = <span class="keyword">new</span> BigInteger(<span class="string">"10"</span> + hex, <span class="number">16</span>).toByteArray();</div><div class="line"></div><div class="line">        <span class="comment">// Copy all the REAL bytes, not the "first"</span></div><div class="line">        <span class="keyword">byte</span>[] ret = <span class="keyword">new</span> <span class="keyword">byte</span>[bArray.length - <span class="number">1</span>];</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ret.length; i++)</div><div class="line">            ret[i] = bArray[i + <span class="number">1</span>];</div><div class="line">        <span class="keyword">return</span> ret;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span>[] DIGITS_POWER</div><div class="line">    <span class="comment">// 0 1 2 3 4 5 6 7 8</span></div><div class="line">    = &#123; <span class="number">1</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">1000</span>, <span class="number">10000</span>, <span class="number">100000</span>, <span class="number">1000000</span>, <span class="number">10000000</span>, <span class="number">100000000</span> &#125;;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * This method generates a TOTP value for the given set of parameters.</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> key</span></div><div class="line"><span class="comment">     *            : the shared secret, HEX encoded</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> time</span></div><div class="line"><span class="comment">     *            : a value that reflects a time</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> returnDigits</span></div><div class="line"><span class="comment">     *            : number of digits to return</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span>: a numeric String in base 10 that includes</span></div><div class="line"><span class="comment">     *          &#123;<span class="doctag">@link</span> truncationDigits&#125; digits</span></div><div class="line"><span class="comment">     */</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">generateTOTP</span><span class="params">(String key, String time,</span></span></div><div class="line"><span class="function"><span class="params">            String returnDigits)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> generateTOTP(key, time, returnDigits, <span class="string">"HmacSHA1"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * This method generates a TOTP value for the given set of parameters.</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> key</span></div><div class="line"><span class="comment">     *            : the shared secret, HEX encoded</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> time</span></div><div class="line"><span class="comment">     *            : a value that reflects a time</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> returnDigits</span></div><div class="line"><span class="comment">     *            : number of digits to return</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span>: a numeric String in base 10 that includes</span></div><div class="line"><span class="comment">     *          &#123;<span class="doctag">@link</span> truncationDigits&#125; digits</span></div><div class="line"><span class="comment">     */</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">generateTOTP256</span><span class="params">(String key, String time,</span></span></div><div class="line"><span class="function"><span class="params">            String returnDigits)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> generateTOTP(key, time, returnDigits, <span class="string">"HmacSHA256"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * This method generates a TOTP value for the given set of parameters.</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> key</span></div><div class="line"><span class="comment">     *            : the shared secret, HEX encoded</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> time</span></div><div class="line"><span class="comment">     *            : a value that reflects a time</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> returnDigits</span></div><div class="line"><span class="comment">     *            : number of digits to return</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span>: a numeric String in base 10 that includes</span></div><div class="line"><span class="comment">     *          &#123;<span class="doctag">@link</span> truncationDigits&#125; digits</span></div><div class="line"><span class="comment">     */</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">generateTOTP512</span><span class="params">(String key, String time,</span></span></div><div class="line"><span class="function"><span class="params">            String returnDigits)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> generateTOTP(key, time, returnDigits, <span class="string">"HmacSHA512"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * This method generates a TOTP value for the given set of parameters.</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> key</span></div><div class="line"><span class="comment">     *            : the shared secret, HEX encoded</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> time</span></div><div class="line"><span class="comment">     *            : a value that reflects a time</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> returnDigits</span></div><div class="line"><span class="comment">     *            : number of digits to return</span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> crypto</span></div><div class="line"><span class="comment">     *            : the crypto function to use</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span>: a numeric String in base 10 that includes</span></div><div class="line"><span class="comment">     *          &#123;<span class="doctag">@link</span> truncationDigits&#125; digits</span></div><div class="line"><span class="comment">     */</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">generateTOTP</span><span class="params">(String key, String time,</span></span></div><div class="line"><span class="function"><span class="params">            String returnDigits, String crypto)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> codeDigits = Integer.decode(returnDigits).intValue();</div><div class="line">        String result = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">        <span class="comment">// Using the counter</span></div><div class="line">        <span class="comment">// First 8 bytes are for the movingFactor</span></div><div class="line">        <span class="comment">// Compliant with base RFC 4226 (HOTP)</span></div><div class="line">        <span class="keyword">while</span> (time.length() &lt; <span class="number">16</span>)</div><div class="line">            time = <span class="string">"0"</span> + time;</div><div class="line"></div><div class="line">        <span class="comment">// Get the HEX in a Byte[]</span></div><div class="line">        <span class="keyword">byte</span>[] msg = hexStr2Bytes(time);</div><div class="line">        <span class="keyword">byte</span>[] k = hexStr2Bytes(key);</div><div class="line">        <span class="keyword">byte</span>[] hash = hmac_sha(crypto, k, msg);</div><div class="line"></div><div class="line">        <span class="comment">// put selected bytes into result int</span></div><div class="line">        <span class="keyword">int</span> offset = hash[hash.length - <span class="number">1</span>] &amp; <span class="number">0xf</span>;</div><div class="line"></div><div class="line">        <span class="keyword">int</span> binary = ((hash[offset] &amp; <span class="number">0x7f</span>) &lt;&lt; <span class="number">24</span>)</div><div class="line">                | ((hash[offset + <span class="number">1</span>] &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">16</span>)</div><div class="line">                | ((hash[offset + <span class="number">2</span>] &amp; <span class="number">0xff</span>) &lt;&lt; <span class="number">8</span>) | (hash[offset + <span class="number">3</span>] &amp; <span class="number">0xff</span>);</div><div class="line"></div><div class="line">        <span class="keyword">int</span> otp = binary % DIGITS_POWER[codeDigits];</div><div class="line"></div><div class="line">        result = Integer.toString(otp);</div><div class="line">        <span class="keyword">while</span> (result.length() &lt; codeDigits) &#123;</div><div class="line">            result = <span class="string">"0"</span> + result;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="comment">// Seed for HMAC-SHA1 - 20 bytes</span></div><div class="line">        String seed = <span class="string">"3132333435363738393031323334353637383930"</span>;</div><div class="line">        <span class="comment">// Seed for HMAC-SHA256 - 32 bytes</span></div><div class="line">        String seed32 = <span class="string">"3132333435363738393031323334353637383930"</span></div><div class="line">                + <span class="string">"313233343536373839303132"</span>;</div><div class="line">        <span class="comment">// Seed for HMAC-SHA512 - 64 bytes</span></div><div class="line">        String seed64 = <span class="string">"3132333435363738393031323334353637383930"</span></div><div class="line">                + <span class="string">"3132333435363738393031323334353637383930"</span></div><div class="line">                + <span class="string">"3132333435363738393031323334353637383930"</span> + <span class="string">"31323334"</span>;</div><div class="line">        <span class="keyword">long</span> T0 = <span class="number">0</span>;</div><div class="line">        <span class="keyword">long</span> X = <span class="number">30</span>;</div><div class="line">        <span class="keyword">long</span> testTime[] = &#123; <span class="number">59L</span>, <span class="number">1111111109L</span>, <span class="number">1111111111L</span>, <span class="number">1234567890L</span>,</div><div class="line">                <span class="number">2000000000L</span>, <span class="number">20000000000L</span> &#125;;</div><div class="line"></div><div class="line">        String steps = <span class="string">"0"</span>;</div><div class="line">        DateFormat df = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);</div><div class="line">        df.setTimeZone(TimeZone.getTimeZone(<span class="string">"UTC"</span>));</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            System.out.println(<span class="string">"+---------------+-----------------------+"</span></div><div class="line">                    + <span class="string">"------------------+--------+--------+"</span>);</div><div class="line">            System.out.println(<span class="string">"|  Time(sec)    |   Time (UTC format)   "</span></div><div class="line">                    + <span class="string">"| Value of T(Hex)  |  TOTP  | Mode   |"</span>);</div><div class="line">            System.out.println(<span class="string">"+---------------+-----------------------+"</span></div><div class="line">                    + <span class="string">"------------------+--------+--------+"</span>);</div><div class="line"></div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; testTime.length; i++) &#123;</div><div class="line">                <span class="keyword">long</span> T = (testTime[i] - T0) / X;</div><div class="line">                steps = Long.toHexString(T).toUpperCase();</div><div class="line">                <span class="keyword">while</span> (steps.length() &lt; <span class="number">16</span>)</div><div class="line">                    steps = <span class="string">"0"</span> + steps;</div><div class="line">                String fmtTime = String.format(<span class="string">"%1$-11s"</span>, testTime[i]);</div><div class="line">                String utcTime = df.format(<span class="keyword">new</span> Date(testTime[i] * <span class="number">1000</span>));</div><div class="line">                System.out.print(<span class="string">"|  "</span> + fmtTime + <span class="string">"  |  "</span> + utcTime + <span class="string">"  | "</span></div><div class="line">                        + steps + <span class="string">" |"</span>);</div><div class="line">                System.out.println(generateTOTP(seed, steps, <span class="string">"8"</span>, <span class="string">"HmacSHA1"</span>)</div><div class="line">                        + <span class="string">"| SHA1   |"</span>);</div><div class="line">                System.out.print(<span class="string">"|  "</span> + fmtTime + <span class="string">"  |  "</span> + utcTime + <span class="string">"  | "</span></div><div class="line">                        + steps + <span class="string">" |"</span>);</div><div class="line">                System.out.println(generateTOTP(seed32, steps, <span class="string">"8"</span>,</div><div class="line">                        <span class="string">"HmacSHA256"</span>) + <span class="string">"| SHA256 |"</span>);</div><div class="line">                System.out.print(<span class="string">"|  "</span> + fmtTime + <span class="string">"  |  "</span> + utcTime + <span class="string">"  | "</span></div><div class="line">                        + steps + <span class="string">" |"</span>);</div><div class="line">                System.out.println(generateTOTP(seed64, steps, <span class="string">"8"</span>,</div><div class="line">                        <span class="string">"HmacSHA512"</span>) + <span class="string">"| SHA512 |"</span>);</div><div class="line"></div><div class="line">                System.out.println(<span class="string">"+---------------+-----------------------+"</span></div><div class="line">                        + <span class="string">"------------------+--------+--------+"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Exception e) &#123;</div><div class="line">            System.out.println(<span class="string">"Error : "</span> + e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">业务</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/10/11/use-TOTP-in-java/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2017/09/30/vert-x-learn-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Vert.x的数据报套接字（UDP）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -222,9 +339,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,

@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Vert.x的数据报套接字（UDP） | 徐宇健的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="UDP是无连接的传输，这意味着您与远程客户端没有建立持续的连接。 所以，您发送和接收的数据包都要包含有远程的地址。 除此之外，UDP不像TCP的使用那样安全，这也就意味着不能保证发送的数据包一定会被对应的接收端（Endpoint）接收。 创建一个 client 12345678910vertx.createDatagramSocket().listen(1234,&quot;127.0.0.1&quot;)&amp;#123">
+  <meta name="description" content="UDP是无连接的传输，这意味着您与远程客户端没有建立持续的连接。 所以，您发送和接收的数据包都要包含有远程的地址。 除此之外，UDP不像TCP的使用那样安全，这也就意味着不能保证发送的数据包一定会被对应的接收端（Endpoint）接收。">
 <meta name="keywords" content="Vert.x">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vert.x的数据报套接字（UDP）">
 <meta property="og:url" content="http://yoursite.com/2017/09/30/vert-x-learn-1/index.html">
 <meta property="og:site_name" content="徐宇健的博客">
-<meta property="og:description" content="UDP是无连接的传输，这意味着您与远程客户端没有建立持续的连接。 所以，您发送和接收的数据包都要包含有远程的地址。 除此之外，UDP不像TCP的使用那样安全，这也就意味着不能保证发送的数据包一定会被对应的接收端（Endpoint）接收。 创建一个 client 12345678910vertx.createDatagramSocket().listen(1234,&quot;127.0.0.1&quot;)&amp;#123">
-<meta property="og:updated_time" content="2017-09-30T08:35:42.278Z">
+<meta property="og:description" content="UDP是无连接的传输，这意味着您与远程客户端没有建立持续的连接。 所以，您发送和接收的数据包都要包含有远程的地址。 除此之外，UDP不像TCP的使用那样安全，这也就意味着不能保证发送的数据包一定会被对应的接收端（Endpoint）接收。">
+<meta property="og:updated_time" content="2017-10-11T07:02:08.449Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vert.x的数据报套接字（UDP）">
-<meta name="twitter:description" content="UDP是无连接的传输，这意味着您与远程客户端没有建立持续的连接。 所以，您发送和接收的数据包都要包含有远程的地址。 除此之外，UDP不像TCP的使用那样安全，这也就意味着不能保证发送的数据包一定会被对应的接收端（Endpoint）接收。 创建一个 client 12345678910vertx.createDatagramSocket().listen(1234,&quot;127.0.0.1&quot;)&amp;#123">
+<meta name="twitter:description" content="UDP是无连接的传输，这意味着您与远程客户端没有建立持续的连接。 所以，您发送和接收的数据包都要包含有远程的地址。 除此之外，UDP不像TCP的使用那样安全，这也就意味着不能保证发送的数据包一定会被对应的接收端（Endpoint）接收。">
   
     <link rel="alternative" href="/atom.xml" title="徐宇健的博客" type="application/atom+xml">
   
@@ -171,6 +171,7 @@
         <p>UDP是无连接的传输，这意味着您与远程客户端没有建立持续的连接。</p>
 <p>所以，您发送和接收的数据包都要包含有远程的地址。</p>
 <p>除此之外，UDP不像TCP的使用那样安全，这也就意味着不能保证发送的数据包一定会被对应的接收端（Endpoint）接收。</p>
+<a id="more"></a>
 <p>创建一个 <code>client</code></p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">vertx.createDatagramSocket().listen(<span class="number">1234</span>,<span class="string">"127.0.0.1"</span>)&#123;</div><div class="line">        <span class="keyword">if</span> (it.succeeded())&#123;</div><div class="line">            logger.info(<span class="string">"bind success <span class="subst">$&#123;it.result()&#125;</span>"</span>)</div><div class="line">            it.result().handler &#123;</div><div class="line">                logger.info(<span class="string">"from <span class="subst">$&#123;it.sender()&#125;</span> data : <span class="subst">$&#123;it.data()&#125;</span>"</span>)</div><div class="line">            &#125;</div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            logger.warn(<span class="string">"bind error : <span class="subst">$&#123;it.cause()&#125;</span>"</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>启动后输出<br>    <code>15:56:30.371 [vert.x-eventloop-thread-0] INFO main - bind success io.vertx.core.datagram.impl.DatagramSocketImpl@4f7e8c07</code><br>说明成功了</p>
@@ -261,6 +262,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2017/10/11/use-TOTP-in-java/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          TOTP（基于时间的一次性密码算法）
+        
+      </div>
+    </a>
   
   
     <a href="/2017/09/28/blog-prevent-duplicate-request/" id="article-nav-older" class="article-nav-link-wrap">
@@ -390,11 +400,15 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Vert.x</a>
+                <a href="javascript:void(0)" class="js-tag color3">业务</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">业务</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Vert.x</a>
               </li>
             
             <div class="clearfix"></div>
