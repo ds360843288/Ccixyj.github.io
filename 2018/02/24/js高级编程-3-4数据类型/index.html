@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2017 | 徐宇健的博客</title>
+  <title>3.4数据类型 | 徐宇健的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="个人博客,在此记录下生命的点滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="徐宇健的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2017/index.html">
+  <meta name="description" content="3.4 数据类型 ECMAScript有五种数据类型(基本数据类型):Undefined,Null, Boolean,Number和String.还有一种复杂数据类型–Object.">
+<meta name="keywords" content="js高级编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.4数据类型">
+<meta property="og:url" content="http://yoursite.com/2018/02/24/js高级编程-3-4数据类型/index.html">
 <meta property="og:site_name" content="徐宇健的博客">
-<meta property="og:description" content="个人博客,在此记录下生命的点滴">
+<meta property="og:description" content="3.4 数据类型 ECMAScript有五种数据类型(基本数据类型):Undefined,Null, Boolean,Number和String.还有一种复杂数据类型–Object.">
+<meta property="og:updated_time" content="2018-02-24T02:59:42.860Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="徐宇健的博客">
-<meta name="twitter:description" content="个人博客,在此记录下生命的点滴">
+<meta name="twitter:title" content="3.4数据类型">
+<meta name="twitter:description" content="3.4 数据类型 ECMAScript有五种数据类型(基本数据类型):Undefined,Null, Boolean,Number和String.还有一种复杂数据类型–Object.">
   
     <link rel="alternative" href="/atom.xml" title="徐宇健的博客" type="application/atom+xml">
   
@@ -154,212 +156,254 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-js高级编程-3-4数据类型" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      3.4数据类型
+    </h1>
+  
+
+        
+        <a href="/2018/02/24/js高级编程-3-4数据类型/" class="archive-article-date">
+  	<time datetime="2018-02-24T02:58:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-24</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="3-4-数据类型"><a href="#3-4-数据类型" class="headerlink" title="3.4 数据类型"></a>3.4 数据类型</h2><blockquote>
+<p>ECMAScript有五种数据类型(基本数据类型):Undefined,Null, Boolean,Number和String.还有一种复杂数据类型–Object.</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="typeof-操作符"><a href="#typeof-操作符" class="headerlink" title="typeof 操作符"></a>typeof 操作符</h3><p>typeof用来检测给定变量的数据类型.</p>
+<ul>
+<li>‘undefined’ –如果这个值未定义</li>
+<li>‘boolen’ –如果这个值是布尔值</li>
+<li>‘string’ –如果这个值是字符串</li>
+<li>‘number’ –如果这个是数值</li>
+<li>‘object’ –如果这个值是对象或null</li>
+<li>‘function’ –如果这个值是函数</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> message  = <span class="string">"some string"</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> message) <span class="comment">//string</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> (message)) <span class="comment">//string</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="number">95</span>) <span class="comment">//number</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="literal">null</span>) <span class="comment">//object</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="keyword">new</span> <span class="built_in">Date</span>()) <span class="comment">//object</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125; ) <span class="comment">//function</span></div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> a ) <span class="comment">//undefined 上下文沒有a这个变量</span></div></pre></td></tr></table></figure>
+<h3 id="Undefined类型"><a href="#Undefined类型" class="headerlink" title="Undefined类型"></a>Undefined类型</h3><p>Undefined的类型只有一个,即特殊的undefined.在使用var声明变量但未对其初始化时,这个变量就是undefined.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> msg ;</div><div class="line"><span class="comment">// var msg = undefined 与上面等价</span></div><div class="line"><span class="built_in">console</span>.log(msg == <span class="literal">undefined</span>)    <span class="comment">//true</span></div><div class="line"><span class="built_in">console</span>.log(message == <span class="literal">undefined</span>)<span class="comment">//false</span></div></pre></td></tr></table></figure>
+<p>包含undefined值的变量与未定义的变量还是不一样的.如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> msg ;</div><div class="line"><span class="comment">//下面这个变量没有声明</span></div><div class="line"><span class="comment">//var age</span></div><div class="line">alert(msg)  <span class="comment">//undefined</span></div><div class="line">alert(age)  <span class="comment">//报错</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log (<span class="keyword">typeof</span> msg) <span class="comment">//undefined</span></div><div class="line"><span class="built_in">console</span>.log (<span class="keyword">typeof</span> age) <span class="comment">//undefined</span></div></pre></td></tr></table></figure>
+<h3 id="Null类型"><a href="#Null类型" class="headerlink" title="Null类型"></a>Null类型</h3><p>Null是第二个只有一个值的特殊类型.这个值是null. 从逻辑来看,是空指针.所以<code>typeof</code>检测<code>null</code>会返回<code>&#39;object&#39;</code>类型.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> car = <span class="literal">null</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> car) <span class="comment">//null</span></div></pre></td></tr></table></figure>
+<p>尽管 <code>null==undefined</code> 总是返回 <code>true</code> ,但这个操作符处于比较的目的会转换其操作数.</p>
+<p>尽管 <code>null</code> 和 <code>undefined</code>有这样的关系,但他们的用途完全不同.</p>
+<p><code>undefined</code> – 无论什么情况都不要显示设置一个变量的值.</p>
+<p><code>null</code> – 在意是否真正的保存了对象,就应该明确让该变量保存 <code>null</code> 值.</p>
+<h3 id="Boolen类型"><a href="#Boolen类型" class="headerlink" title="Boolen类型"></a>Boolen类型</h3><p>该类型只有两个字面值:<code>true</code> 和 <code>false</code>.</p>
+<p>这两个值与数字值不是一回事,因此true不一定等于1 , false也不一定等于0.</p>
+<p>虽然Boolean的字面值只有两个,但JS中所有的类型都与Boolean等价的值.</p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th style="text-align:right">true的值</th>
+<th style="text-align:center">false的值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>string</td>
+<td style="text-align:right">任何非空字符串</td>
+<td style="text-align:center">“”</td>
+</tr>
+<tr>
+<td>Number</td>
+<td style="text-align:right">任何非零数字值(包括无穷大)</td>
+<td style="text-align:center">0和NaN</td>
+</tr>
+<tr>
+<td>Object</td>
+<td style="text-align:right">任何对象</td>
+<td style="text-align:center">null</td>
+</tr>
+<tr>
+<td>Undefined</td>
+<td style="text-align:right">n/a</td>
+<td style="text-align:center">undefined</td>
+</tr>
+</tbody>
+</table>
+<p><strong>这些规则对控制流语句非常重要.</strong></p>
+<h3 id="Number类型"><a href="#Number类型" class="headerlink" title="Number类型"></a>Number类型</h3><p>数值范围: <code>Number.MIN_VALUE</code> ~ <code>Number.MAX_VALUE</code><br>如果计算超出了这个范围,则自动转化为特殊的<code>Infinity</code>值.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> result =  <span class="built_in">Number</span>.MAX_VALUE +  <span class="built_in">Number</span>.MAX_VALUE</div><div class="line"><span class="built_in">console</span>.log(result)</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">isFinite</span>(result) )</div></pre></td></tr></table></figure>
+<hr>
+<p><strong>NaN</strong><br><code>NaN</code>,即非数值(Not a Number)是一个特殊的数值.表示本来要返回一个数值的操作未返回数值的情况.例如:在java中<code>任何数值/0</code>原本会导致错误,但是在js中,会返回<code>NaN</code>,并且不会影响其他代码执行.</p>
+<p><code>NaN</code>有两个非同寻常的特点.</p>
+<p>*任何涉及<code>NaN</code>的操作都会返回<code>NaN</code>,这回导致在多部计算中有可能导致问题.</p>
+<p>*<code>NaN</code>与任何值都不相等,包括<code>NaN</code>本身.如 <code>NaN == NaN //false</code></p>
+<h3 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h3><p>1.字符串字面量<br>2.字符串的特点:不可变<br>3.转化为字符串:<code>toString()</code> 和 <code>String()</code></p>
+<h3 id="Object类型"><a href="#Object类型" class="headerlink" title="Object类型"></a>Object类型</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line"><span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>; <span class="comment">//有效 ,不推荐</span></div></pre></td></tr></table></figure>
+<p> Object都具有下列属性和方法</p>
+<ol>
+<li>Constructor:保存着用于创建当前对象的函数.</li>
+<li>hasOwnProperty(<em>propertyName</em>):用于检查给定的属性在当前对象实例中(不是在实例的原型中)是否存在. <em>propertyName</em>作为参数以字符串指定</li>
+<li>isPropertyOf(<em>object</em>):用于检查传入的对象是否是另一个对象的原型</li>
+<li>propertyIsEnumerable(<em>propertyName</em>):用于检查给定的属性是否能够使用<code>for-in</code>语句来枚举.<em>propertyName</em>作为参数以字符串指定</li>
+<li>toLocaleString():返回对象本地化的字符串表示</li>
+<li>toString():返回对象的字符串表示</li>
+<li>valueof():返回对象的字符串|数值|布尔值表示.通常与toString()的返回值相同.</li>
+</ol>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/pay/alipay.webp">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/pay/wechatpay.webp">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/10/31/redis-cluster-on-centos7/" class="archive-article-date">
-  	<time datetime="2017-10-31T05:44:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-31</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/10/31/redis-cluster-on-centos7/">centos7上redis的集群搭建</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">redis</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">js高级编程</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2018/02/24/js高级编程-3-4数据类型/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/10/11/use-TOTP-in-java/" class="archive-article-date">
-  	<time datetime="2017-10-11T06:17:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-11</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/31/redis-cluster-on-centos7/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">centos7上redis的集群搭建</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/10/11/use-TOTP-in-java/">TOTP（基于时间的一次性密码算法）</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/30/vert-x-learn-1/" class="archive-article-date">
-  	<time datetime="2017-09-30T07:21:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/30/vert-x-learn-1/">Vert.x的数据报套接字（UDP）</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Vert.x</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/28/blog-prevent-duplicate-request/" class="archive-article-date">
-  	<time datetime="2017-09-28T09:07:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/28/blog-prevent-duplicate-request/">app中重复请求的问题</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">业务</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/27/blog-1/" class="archive-article-date">
-  	<time datetime="2017-09-27T07:53:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/27/blog-1/">第一篇博客,hexo搭建的,终于出来了</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">水</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -382,8 +426,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
