@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2018 | 徐宇健的博客</title>
+  <title>执行环境及作用域 | 徐宇健的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="个人博客,在此记录下生命的点滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="徐宇健的博客">
-<meta property="og:url" content="http://yoursite.com/archives/2018/index.html">
+  <meta name="description" content="4.2 执行环境及作用域执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
+<meta name="keywords" content="js高级编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="执行环境及作用域">
+<meta property="og:url" content="http://yoursite.com/2018/03/01/js高级编程-4-2执行环境及作用域/index.html">
 <meta property="og:site_name" content="徐宇健的博客">
-<meta property="og:description" content="个人博客,在此记录下生命的点滴">
+<meta property="og:description" content="4.2 执行环境及作用域执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
+<meta property="og:updated_time" content="2018-03-01T07:24:53.427Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="徐宇健的博客">
-<meta name="twitter:description" content="个人博客,在此记录下生命的点滴">
+<meta name="twitter:title" content="执行环境及作用域">
+<meta name="twitter:description" content="4.2 执行环境及作用域执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
   
     <link rel="alternative" href="/atom.xml" title="徐宇健的博客" type="application/atom+xml">
   
@@ -154,36 +156,87 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-js高级编程-4-2执行环境及作用域" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      执行环境及作用域
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/01/js高级编程-4-2执行环境及作用域/" class="archive-article-date">
+
+        
+        <a href="/2018/03/01/js高级编程-4-2执行环境及作用域/" class="archive-article-date">
   	<time datetime="2018-03-01T07:24:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-01</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/01/js高级编程-4-2执行环境及作用域/">执行环境及作用域</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="4-2-执行环境及作用域"><a href="#4-2-执行环境及作用域" class="headerlink" title="4.2 执行环境及作用域"></a>4.2 执行环境及作用域</h2><p>执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.</p>
+<a id="more"></a>
+<p>全局环境是最外围的一个环境.在Web浏览器中,全局执行环境默认为<code>window</code>对象,因此,所有全局变量和函数都是作为<code>window</code>对象创建的.在应用程序关闭(关闭网页或浏览器)时才被销毁.</p>
+<p>每个函数都有自己的执行环境.当执行流进入一个函数时,函数环境会推入一个环境栈中.函数执行后,栈环境会弹出,把控制权返回给之前的执行环境.</p>
+<p>当代码在一个环境执行时,会创建变量对象的一个作用域链(scope chain).其用途是保证对执行环境有权访问的所有变量和函数的有序访问.作用域链的前端,始终都是当前执行代码所在环境的变量对象.如果环境是函数,则将其活动对象(activation object)作为变量对象.活动对象在最开始时只包含一个变量.及<code>arguments</code>对象(在全局环境中不存在).全局执⾏环境的变量对象始终都是作⽤域链中的最后⼀个对象.</p>
+<p>标识符解析是沿着作⽤域链⼀级⼀级地搜索标识符的过程.搜索过程始终从作⽤域链的前端开始,然后逐级地向后回溯.直⾄找到标识符为⽌(如果找不到标识符,通常会导致错误发⽣).如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//4.2 变量的作用域</span></div><div class="line"><span class="keyword">var</span> color = <span class="string">"blue"</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span>(color == <span class="string">"blue"</span>)&#123;</div><div class="line">        color = <span class="string">"red"</span></div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        color = <span class="string">"blue"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">changeColor()</div><div class="line"><span class="built_in">console</span>.log(color)<span class="comment">//red</span></div></pre></td></tr></table></figure>
+<p>以上例子中:<code>changeColor()</code>的作用域链包含两个对象:自己的变量对象(包含<code>arguments</code>)和全局对象.</p>
+<blockquote>
+<p>函数参数也当作变量对待,其访问规则与执行环境的其他变量相同.</p>
+</blockquote>
+<h4 id="4-2-1-延长作用域"><a href="#4-2-1-延长作用域" class="headerlink" title="4.2.1  延长作用域"></a>4.2.1  延长作用域</h4><p>当执行流执行到下列任何一个语句时,作用域链就会延长.</p>
+<ul>
+<li><code>tray-catch</code>的catch语句块.</li>
+<li><code>with</code>语句</li>
+</ul>
+<h4 id="4-2-2-没有块级作用域"><a href="#4-2-2-没有块级作用域" class="headerlink" title="4.2.2  没有块级作用域"></a>4.2.2  没有块级作用域</h4><p>观察以下代码,可以发现<code>color</code>变量的作用域延长了.<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="literal">true</span>)&#123;</div><div class="line">    <span class="keyword">var</span> color = <span class="string">"blue"</span></div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(color) <span class="comment">//blue</span></div></pre></td></tr></table></figure></p>
+<p>已经经典的等例子: (推荐使用<code>let</code>)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</div><div class="line">   <span class="comment">//no op</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(i) <span class="comment">//10</span></div></pre></td></tr></table></figure>
+<p>由于没有块级变量,由<code>for</code>创建的变量<code>i</code>及时循环执行结束后,也依旧存在于循环外部的执行环境中.</p>
+<h5 id="1-声明变量"><a href="#1-声明变量" class="headerlink" title="1.声明变量"></a>1.声明变量</h5><p>使用<code>var</code>声明的变量会自动添加到最近的环境中.在函数中,就是函数的局部环境;在switch中,最接近的就是函数环境.如果变量初始化时,没有使用<code>var</code>声明,则该变量会自动添加到全局环境中.( 这是坑…… )</p>
+<h5 id="2-查询标识符"><a href="#2-查询标识符" class="headerlink" title="2.查询标识符"></a>2.查询标识符</h5><p>当某个环境中为了读取或引用某个标识符时,必须通过搜索来确定.搜索过程从作用域链前端开始,向上逐级查询给定名字匹配的标识符.如果在局部环境找到,搜索过程就停止,直到全局环境,即使父环境中有相同的标识符.</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/pay/alipay.webp">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/pay/wechatpay.webp">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -195,95 +248,122 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/03/01/js高级编程-4-2执行环境及作用域/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/01/js高级编程-4-1基本类型和引用类型的值/" class="archive-article-date">
-  	<time datetime="2018-03-01T07:22:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-01</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/03/01/js高级编程-4-1基本类型和引用类型的值/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">基本类型和引用类型的值</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/01/js高级编程-4-1基本类型和引用类型的值/">基本类型和引用类型的值</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">js高级编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/24/js高级编程-3-4数据类型/" class="archive-article-date">
-  	<time datetime="2018-02-24T02:58:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/24/js高级编程-3-4数据类型/">数据类型</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">js高级编程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "执行环境及作用域",
+  owner: 'Ccixyj',
+  repo: 'Ccixyj.github.io',
+  oauth: {
+    client_id: 'a1c09885df79bbf920aa',
+    client_secret: 'f1b323f0894fcc598d4a768bac8ac8a266878363',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
@@ -306,8 +386,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
