@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>执行环境及作用域 | 徐宇健的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="4.2 执行环境及作用域执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
+  <meta name="description" content="执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
 <meta name="keywords" content="js高级编程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="执行环境及作用域">
 <meta property="og:url" content="http://yoursite.com/2018/03/01/js高级编程-4-2执行环境及作用域/index.html">
 <meta property="og:site_name" content="徐宇健的博客">
-<meta property="og:description" content="4.2 执行环境及作用域执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
-<meta property="og:updated_time" content="2018-03-01T07:24:53.427Z">
+<meta property="og:description" content="执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
+<meta property="og:updated_time" content="2018-03-05T02:06:04.769Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="执行环境及作用域">
-<meta name="twitter:description" content="4.2 执行环境及作用域执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
+<meta name="twitter:description" content="执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.">
   
     <link rel="alternative" href="/atom.xml" title="徐宇健的博客" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="4-2-执行环境及作用域"><a href="#4-2-执行环境及作用域" class="headerlink" title="4.2 执行环境及作用域"></a>4.2 执行环境及作用域</h2><p>执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.</p>
+        <p>执行环境(execution context,简称环境)是JS最为重要的一个概念.每个环境都有一个与之对应的变量对象(variable object),环境中定义的变量都保存在这个对象中.</p>
 <a id="more"></a>
 <p>全局环境是最外围的一个环境.在Web浏览器中,全局执行环境默认为<code>window</code>对象,因此,所有全局变量和函数都是作为<code>window</code>对象创建的.在应用程序关闭(关闭网页或浏览器)时才被销毁.</p>
 <p>每个函数都有自己的执行环境.当执行流进入一个函数时,函数环境会推入一个环境栈中.函数执行后,栈环境会弹出,把控制权返回给之前的执行环境.</p>
@@ -311,6 +311,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2018/03/03/js高级编程-5-1-Object类型/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Object类型
+        
+      </div>
+    </a>
   
   
     <a href="/2018/03/01/js高级编程-4-1基本类型和引用类型的值/" id="article-nav-older" class="article-nav-link-wrap">
@@ -456,15 +465,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">业务</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">js高级编程</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">业务</a>
               </li>
              
               <li class="article-tag-list-item">

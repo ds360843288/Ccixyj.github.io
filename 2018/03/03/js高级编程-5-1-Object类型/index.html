@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 水 | 徐宇健的博客</title>
+  <title>Object类型 | 徐宇健的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="个人博客,在此记录下生命的点滴">
-<meta property="og:type" content="website">
-<meta property="og:title" content="徐宇健的博客">
-<meta property="og:url" content="http://yoursite.com/tags/水/index.html">
+  <meta name="description" content="Object类型是JS中使用最多的一个类型.Object的实例不具备多少功能,但对于应用程序中存储和传输数据而言,他们确实是非常理想的选择.">
+<meta name="keywords" content="js高级编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object类型">
+<meta property="og:url" content="http://yoursite.com/2018/03/03/js高级编程-5-1-Object类型/index.html">
 <meta property="og:site_name" content="徐宇健的博客">
-<meta property="og:description" content="个人博客,在此记录下生命的点滴">
+<meta property="og:description" content="Object类型是JS中使用最多的一个类型.Object的实例不具备多少功能,但对于应用程序中存储和传输数据而言,他们确实是非常理想的选择.">
+<meta property="og:updated_time" content="2018-03-05T02:06:04.770Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="徐宇健的博客">
-<meta name="twitter:description" content="个人博客,在此记录下生命的点滴">
+<meta name="twitter:title" content="Object类型">
+<meta name="twitter:description" content="Object类型是JS中使用最多的一个类型.Object的实例不具备多少功能,但对于应用程序中存储和传输数据而言,他们确实是非常理想的选择.">
   
     <link rel="alternative" href="/atom.xml" title="徐宇健的博客" type="application/atom+xml">
   
@@ -154,60 +156,211 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-js高级编程-5-1-Object类型" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/27/blog-1/" class="archive-article-date">
-  	<time datetime="2017-09-27T07:53:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-27</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/27/blog-1/">第一篇博客</a>
+    <h1 class="article-title" itemprop="name">
+      Object类型
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/03/03/js高级编程-5-1-Object类型/" class="archive-article-date">
+  	<time datetime="2018-03-03T11:17:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Object类型是JS中使用最多的一个类型.Object的实例不具备多少功能,但对于应用程序中存储和传输数据而言,他们确实是非常理想的选择.</p>
+<a id="more"></a>
+<p>创建Object有两种方式.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//1.使用new方式</span></div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">person.name = <span class="string">"zhang san"</span>;</div><div class="line">person.age = <span class="number">29</span>;</div><div class="line"></div><div class="line"><span class="comment">//2.使用对象字面量表示法.</span></div><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">    name : <span class="string">"zhang san"</span>, <span class="comment">//属性名也可以说使用字符串,等价与"name"</span></div><div class="line">    age : <span class="number">29</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">//留空花括号也可以</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> person = &#123;&#125;;</div><div class="line">person.name = <span class="string">"张三"</span>;</div><div class="line">person.age = <span class="number">29</span></div></pre></td></tr></table></figure>
+<p>推荐使用对象字面量语法,语法要求代码少,并且给人以封装数据的感觉.对象字面量也是函数传递大量可选参数的首选方式.如:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//字面量可选参数</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">display</span>(<span class="params">args</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> output = <span class="string">""</span>;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> args.name == <span class="string">"string"</span>) &#123;</div><div class="line">        output += <span class="string">"Name is "</span> + args.name + <span class="string">";\n"</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> args.age == <span class="string">"number"</span>) &#123;  </div><div class="line">        output += <span class="string">"Age is "</span>+ args.age + <span class="string">"; \n"</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="built_in">console</span>.log(output);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">display(&#123;</div><div class="line">    name : <span class="string">"zhang san"</span>,</div><div class="line">    age : <span class="number">29</span></div><div class="line">&#125;); </div><div class="line"></div><div class="line">display(&#123;</div><div class="line">    name : <span class="string">"li si"</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>这种传递方式适合需要向函数传递大量可选蚕食的情形.一般来讲,明明参数虽然容易处理,但有多个参数下就会不够灵活.最好的处理方式是必须值使用命名参数,可选参数使用对象字面量来封装多个参数.</p>
+<p>调用对象属性时一般使用点<code>.</code>表示法,Js中也可以使用方括号来访问对象的属性.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(person.name ); <span class="comment">//zhang san</span></div><div class="line"><span class="built_in">console</span>.log(person[<span class="string">"name"</span>])<span class="comment">//zhang san</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> porpName = <span class="string">"name"</span>; <span class="comment">//使用一个变量</span></div><div class="line"><span class="built_in">console</span>.log(person[porpName])<span class="comment">//zhang san</span></div></pre></td></tr></table></figure>
+<p>从功能上看这两种语法没有区别,但方括号的优点是可以使用变量来访问属性及属性名是关键字或保留字或者导致语法错误的字符,如属性名是<code>first name</code>中包含空格.除非必要,一般还是使用<code>.</code>表示法.</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/pay/alipay.webp">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/pay/wechatpay.webp">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">水</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">js高级编程</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/03/03/js高级编程-5-1-Object类型/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/03/05/js高级编程-5-2Array类型/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Array类型
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2018/03/01/js高级编程-4-2执行环境及作用域/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">执行环境及作用域</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "Object类型",
+  owner: 'Ccixyj',
+  repo: 'Ccixyj.github.io',
+  oauth: {
+    client_id: 'a1c09885df79bbf920aa',
+    client_secret: 'f1b323f0894fcc598d4a768bac8ac8a266878363',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
@@ -230,9 +383,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
