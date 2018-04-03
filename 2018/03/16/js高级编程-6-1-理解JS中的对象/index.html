@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Function类型 | 徐宇健的博客</title>
+  <title>理解JS中的对象 | 徐宇健的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="说起来ECMAScript中什么最有意思,莫过于函数了—-而有意思的根源,在于函数实际上是对象.每个函数都是Function的实例,而且与其他引用类型一样具有属性和方法.由于函数是对象,所以函数名实际上是一个指向函数的指针,不会与某个函数绑定.">
+  <meta name="description" content="JS中的对象可以看作是散列表:有键值对组成,值可以是数据或函数.每个对象都是基于一个引用类型创建,这个类型可以是原生类型,也可以是自定义的类型.">
 <meta name="keywords" content="js高级编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Function类型">
-<meta property="og:url" content="http://yoursite.com/2018/03/13/js高级编程-5-5Function类型/index.html">
+<meta property="og:title" content="理解JS中的对象">
+<meta property="og:url" content="http://yoursite.com/2018/03/16/js高级编程-6-1-理解JS中的对象/index.html">
 <meta property="og:site_name" content="徐宇健的博客">
-<meta property="og:description" content="说起来ECMAScript中什么最有意思,莫过于函数了—-而有意思的根源,在于函数实际上是对象.每个函数都是Function的实例,而且与其他引用类型一样具有属性和方法.由于函数是对象,所以函数名实际上是一个指向函数的指针,不会与某个函数绑定.">
-<meta property="og:updated_time" content="2018-03-14T06:02:18.186Z">
+<meta property="og:description" content="JS中的对象可以看作是散列表:有键值对组成,值可以是数据或函数.每个对象都是基于一个引用类型创建,这个类型可以是原生类型,也可以是自定义的类型.">
+<meta property="og:updated_time" content="2018-04-03T09:08:11.352Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Function类型">
-<meta name="twitter:description" content="说起来ECMAScript中什么最有意思,莫过于函数了—-而有意思的根源,在于函数实际上是对象.每个函数都是Function的实例,而且与其他引用类型一样具有属性和方法.由于函数是对象,所以函数名实际上是一个指向函数的指针,不会与某个函数绑定.">
+<meta name="twitter:title" content="理解JS中的对象">
+<meta name="twitter:description" content="JS中的对象可以看作是散列表:有键值对组成,值可以是数据或函数.每个对象都是基于一个引用类型创建,这个类型可以是原生类型,也可以是自定义的类型.">
   
     <link rel="alternative" href="/atom.xml" title="徐宇健的博客" type="application/atom+xml">
   
@@ -156,56 +156,55 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-js高级编程-5-5Function类型" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-js高级编程-6-1-理解JS中的对象" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Function类型
+      理解JS中的对象
     </h1>
   
 
         
-        <a href="/2018/03/13/js高级编程-5-5Function类型/" class="archive-article-date">
-  	<time datetime="2018-03-13T15:18:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-13</time>
+        <a href="/2018/03/16/js高级编程-6-1-理解JS中的对象/" class="archive-article-date">
+  	<time datetime="2018-03-15T16:07:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-16</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>说起来ECMAScript中什么最有意思,莫过于函数了—-而有意思的根源,在于函数实际上是对象.每个函数都是<code>Function</code>的实例,而且与其他引用类型一样具有属性和方法.由于函数是对象,所以函数名实际上是一个指向函数的指针,不会与某个函数绑定.</p>
+        <p>JS中的对象可以看作是散列表:有键值对组成,值可以是数据或函数.每个对象都是基于一个引用类型创建,这个类型可以是原生类型,也可以是自定义的类型.</p>
 <a id="more"></a>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//函数的声明</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">num1 , num2</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> num1 + num2;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//与上面类似的声明</span></div><div class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">num1 , num2</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> num1 + num2;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//使用Function构造函数</span></div><div class="line"><span class="comment">//不推荐</span></div><div class="line"><span class="keyword">var</span> sum = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"num1"</span>,<span class="string">"num2"</span>,<span class="string">"return num1 + num2;"</span>)</div></pre></td></tr></table></figure>
-<h3 id="没有重载"><a href="#没有重载" class="headerlink" title="没有重载"></a>没有重载</h3><p>将函数名想象成指针,有助于理解JS为什么没有重载的概念.同名的函数,后面声明的会覆盖前面声明的函数.</p>
-<h3 id="作为值的函数"><a href="#作为值的函数" class="headerlink" title="作为值的函数"></a>作为值的函数</h3><p>因为函数名本身就是变量,所以函数可以作为值来使用.函数不仅可以作为传递参数也可以作为函数的结果返回.</p>
-<h3 id="函数内部属性"><a href="#函数内部属性" class="headerlink" title="函数内部属性"></a>函数内部属性</h3><p>在函数内部,有两个特殊对象:<code>arguments</code>和<code>this</code>.</p>
-<p><code>arguments</code>是一个类数组对象,包含着传入的所有参数.虽然<code>arguments</code>的主要用途是保存函数参数,但这个对象还有一个名叫<code>callee</code>的属性,该属性是一个指针,指向<code>arguments</code>对象的函数.</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial</span>(<span class="params">num</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span>(num &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">return</span> num * factorial(num<span class="number">-1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>以上方法如果函数名<code>factorial</code>,则无法得到正确的结果,所以可以这样修改:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//消除函数名的耦合</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial</span>(<span class="params">num</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span>(num &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">return</span> num * <span class="built_in">arguments</span>.callee(num <span class="number">-1</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//测试</span></div><div class="line"><span class="keyword">var</span> trueFunc = factorial;</div><div class="line">factorial = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(trueFunc(<span class="number">5</span>))  <span class="comment">//120</span></div><div class="line"><span class="built_in">console</span>.log(factorial(<span class="number">5</span>)) <span class="comment">//0</span></div></pre></td></tr></table></figure></p>
-<p>函数内部另一个特殊对象是<code>this</code>.<code>this</code>引用的是函数据以执行的环境对象—-或者说是<code>this</code>的值.(全局作用域是<code>window</code>对象).</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//this</span></div><div class="line"><span class="built_in">window</span>.color = <span class="string">'red'</span>;</div><div class="line"><span class="keyword">var</span> o = &#123;<span class="attr">color</span>:<span class="string">'blue'</span>&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayColor</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">console</span>.log(<span class="keyword">this</span>.color);</div><div class="line">&#125;</div><div class="line">sayColor()   <span class="comment">//red</span></div><div class="line"></div><div class="line">o.sayColor = sayColor;</div><div class="line">o.sayColor() <span class="comment">//blue</span></div></pre></td></tr></table></figure>
-<blockquote>
-<p>注意:函数的名字只是一个包含指针的变量而已.因此,即使在不同的执行环境中,全局的<code>sayColor()</code>函数与<code>o.sayColor</code>指向的仍是同一个函数.</p>
-</blockquote>
-<h3 id="函数的属性和方法"><a href="#函数的属性和方法" class="headerlink" title="函数的属性和方法"></a>函数的属性和方法</h3><p>JS中的函数是对象,所以函数也有属性和方法.每个函数包含两个属性:<code>length</code>和<code>prototype</code>.</p>
-<p><code>length</code>属性表示函数希望接收的命名参数个数.<br><code>prototype</code>是保存他们所有的实例方法的真正所在.在JS中,<code>prototype</code>是不可枚举的,所以<code>for-in</code>无法发现.</p>
-<p>每个函数包含两个非继承而来的方法<code>apply()</code>和<code>call()</code>.这两个方法都是在特定的作用域中调用函数,实际上是设置<code>this</code>的对象的值.不同的地方在于,<code>apply()</code>接收两个参数,一个是作用域对象,另一个是参数数组(可以是<code>Array</code>也可以是<code>arguments</code>).<code>call()</code>第一个参数是作用域对象,之后的参数直接传递给函数.</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//call</span></div><div class="line"><span class="comment">//function.call(thisArg, arg1, arg2, ...)</span></div><div class="line">sayColor.call(<span class="literal">null</span>) <span class="comment">//red</span></div><div class="line">sayColor.call(<span class="built_in">window</span>) <span class="comment">//red</span></div><div class="line">sayColor.call(o) <span class="comment">//blue</span></div><div class="line"></div><div class="line"><span class="comment">//apply</span></div><div class="line"><span class="comment">//function.apply(thisArg, [argsArray])</span></div><div class="line">sayColor.apply(<span class="literal">null</span>) <span class="comment">//red</span></div><div class="line">sayColor.apply(<span class="built_in">window</span>) <span class="comment">//red</span></div><div class="line">sayColor.apply(o) <span class="comment">//blue</span></div></pre></td></tr></table></figure>
-<p>还有一个方法:<code>bind()</code>.这个方法会创建一个函数实例.其<code>this</code>值会绑定到传给函数的值.</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//bind</span></div><div class="line"><span class="keyword">var</span> objSayColor = sayColor.bind(o);</div><div class="line"><span class="comment">//do some thing</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"======"</span>)</div><div class="line">objSayColor() <span class="comment">//blue</span></div></pre></td></tr></table></figure>
-<blockquote>
-<p>注意:<code>bind()</code>返回的是函数,所以可以延迟调用,而<code>call()</code>和<code>apply()</code>是立即执行的.</p>
-</blockquote>
-<p> <strong>参考</strong>:</p>
+<p>创建对象的属性和方法如下:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建对象</span></div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">person.name = <span class="string">"nick"</span>;</div><div class="line">person.age = <span class="number">29</span>;</div><div class="line">person.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//更多的使用字面量创建对象</span></div><div class="line"><span class="keyword">var</span> person =&#123;</div><div class="line">    name : <span class="string">"nick"</span>,</div><div class="line">    age : <span class="number">29</span>,</div><div class="line">    sayName : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="属性类型"><a href="#属性类型" class="headerlink" title="属性类型"></a>属性类型</h3><p>ECMA-262定义只有内部才用的特性(attribute)时,描述了属性(property)的各种特征.ECMA-262定义这些特性是为JS引擎用的,JS中不能直接访问.为了表示这些是内部值,该规范把它们放在了两对方括号中,例如<code>[[Enumerable]]</code>.</p>
+<p>ECMAScript中有两种属性:数据属性和访问属性.</p>
+<h4 id="1-数据属性"><a href="#1-数据属性" class="headerlink" title="1.数据属性"></a>1.数据属性</h4><p>数据属性包含一个数据值的位置.在这个位置可以读取和写入.数据属性有4个特性:<br>要修改属性的默认特性,必须使用<code>Object.defineProperty()</code>方法.<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="noopener"> 参考文档</a></p>
 <ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply" target="_blank" rel="noopener">apply</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call" target="_blank" rel="noopener">call</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind" target="_blank" rel="noopener">bind</a></li>
+<li><code>[[Configurable]]</code>: 表示能否通过 <code>delete</code>删除属性从而重新定义属性,能否修改属性的特性,或者能否把属性修改为访问器属性.直接在对象上定义,默认为<code>true</code>,否则<code>false</code></li>
+<li><code>[[Enumerable]]</code>: 表示能否通过<code>for-in</code>循环返回属性.直接在对象上定义,默认为<code>true</code>,否则<code>false</code></li>
+<li><code>[[Writable]]</code>: 表示能否修改属性的值.直接在对象上定义,默认为<code>true</code>,否则<code>false</code></li>
+<li><code>[[Value]]</code>: 包含这个属性的数据值.读取属性值的时候,从这个位置读;写入属性的时候,把新值保存在这个位置.默认<code>undefined</code>.</li>
 </ul>
-
+<p>对于前面的<code>person</code>对象,它的<code>[[Configurable]]</code>,<code>[[Enumerable]]</code>,<code>[[Writable]]</code>都为<code>true</code>,<code>name</code>属性的 <code>[[Value]]</code>特性被设置为<code>&quot;nick&quot;</code>.对这个值的修改都将反应在这个位置.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Object.defineProperty() </span></div><div class="line"><span class="comment">//Configurable  Enumerable Writable默认都为false</span></div><div class="line"><span class="keyword">var</span> o = &#123;&#125;;</div><div class="line"><span class="built_in">Object</span>.defineProperty(o,<span class="string">'a'</span>,&#123;</div><div class="line">    value:<span class="number">1</span></div><div class="line">&#125;)</div><div class="line">o.a = <span class="number">2</span>;             <span class="comment">//设置a的值,无效</span></div><div class="line"><span class="built_in">console</span>.log(o.a);    <span class="comment">// 1</span></div><div class="line"><span class="keyword">delete</span> o.a;          <span class="comment">//false</span></div><div class="line"><span class="keyword">for</span>(<span class="keyword">let</span> p <span class="keyword">in</span> o)&#123;</div><div class="line">    <span class="built_in">console</span>.log(p)   <span class="comment">//empty</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-访问器属性"><a href="#2-访问器属性" class="headerlink" title="2.访问器属性"></a>2.访问器属性</h4><p>访问器属性有四个.</p>
+<ul>
+<li><code>[[Configurable]]</code>: 表示能否通过 <code>delete</code>删除属性从而重新定义属性,能否修改属性的特性,或者能否把属性修改为访问器属性.直接在对象上定义,默认为<code>true</code>,否则<code>false</code></li>
+<li><code>[[Enumerable]]</code>: 表示能否通过<code>for-in</code>循环返回属性.直接在对象上定义,默认为<code>true</code>,否则<code>false</code></li>
+<li><code>[[Get]]</code>:在读取属性时调用的函数.默认为<code>undefined</code></li>
+<li><code>[[Set]]</code>在写入属性时调用的函数.默认为<code>undefined</code></li>
+</ul>
+<p>访问器属性不能直接定义,必须使用<code>Object.defineProperty()</code>来定义.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//访问器属性</span></div><div class="line"><span class="keyword">var</span> book = &#123;</div><div class="line">    _year:<span class="number">2004</span>,</div><div class="line">    edition:<span class="number">1</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">Object</span>.defineProperty(book,<span class="string">"year"</span>,&#123;</div><div class="line">    get:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="keyword">return</span> <span class="keyword">this</span>._year; &#125;,</div><div class="line">    set:<span class="function"><span class="keyword">function</span>(<span class="params">newVar</span>)</span>&#123;</div><div class="line">        <span class="keyword">this</span>._year = newVar;</div><div class="line">        <span class="keyword">this</span>.edition += newVar - <span class="number">2004</span>;</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">book.year = <span class="number">2005</span>; </div><div class="line"><span class="built_in">console</span>.log(book.edition); <span class="comment">//2</span></div></pre></td></tr></table></figure>
+<p>如果只指定<code>getter</code>意味着属性是只读的.严格模式下,写入<code>getter</code>属性会报错.如果只指定<code>setter</code>也不能读,非严格模式下返回<code>undefined</code>,在严格模式下返回错误.</p>
+<p>另外有非标准的<code>obj.__defineSetter__(prop, fun)</code> 和 <code>obj.__defineGetter__(prop, func)</code>.<strong>该特性是非标准的，请尽量不要在生产环境中使用它！,且为已废弃状态</strong></p>
+<h3 id="定义多个属性"><a href="#定义多个属性" class="headerlink" title="定义多个属性"></a>定义多个属性</h3><p>由于定义多个属性的可能性很大,所以又定义了<code>Object.defineProperties(obj, props)</code>方法.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义多个属性</span></div><div class="line"><span class="keyword">var</span> book = &#123;&#125; ;</div><div class="line"><span class="built_in">Object</span>.defineProperties(book,&#123;</div><div class="line">    _year:&#123;</div><div class="line">        writable : <span class="literal">true</span>, <span class="comment">//可写</span></div><div class="line">        value:<span class="number">2004</span></div><div class="line">        &#125;,</div><div class="line">    edition:&#123;</div><div class="line">        writable : <span class="literal">true</span>, <span class="comment">//可写</span></div><div class="line">        value:<span class="number">1</span></div><div class="line">        &#125;,</div><div class="line">    year:&#123;</div><div class="line">        get:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>._year ;</div><div class="line">        &#125;,</div><div class="line">        set:<span class="function"><span class="keyword">function</span>(<span class="params">newVar</span>)</span>&#123;</div><div class="line">            <span class="keyword">if</span>(newVar &gt; <span class="number">2004</span>)&#123;</div><div class="line">                <span class="keyword">this</span>._year = newVar;</div><div class="line">                <span class="keyword">this</span>.edition += newVar - <span class="number">2004</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line">book.year = <span class="number">2005</span>; </div><div class="line"><span class="built_in">console</span>.log(book.edition); <span class="comment">//2</span></div></pre></td></tr></table></figure>
+<h3 id="读取属性的特性"><a href="#读取属性的特性" class="headerlink" title="读取属性的特性"></a>读取属性的特性</h3><p><code>Object.getOwnPropertyDescriptor(obj, prop)</code> 方法返回指定对象上一个自有属性对应的属性描述符。（自有属性指的是直接赋予该对象的属性，不需要从原型链上进行查找的属性）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> o, d;</div><div class="line"></div><div class="line">o = &#123; get foo() &#123; <span class="keyword">return</span> <span class="number">17</span>; &#125; &#125;;</div><div class="line">d = <span class="built_in">Object</span>.getOwnPropertyDescriptor(o, <span class="string">"foo"</span>);</div><div class="line"><span class="comment">// d &#123;</span></div><div class="line"><span class="comment">//   configurable: true,</span></div><div class="line"><span class="comment">//   enumerable: true,</span></div><div class="line"><span class="comment">//   get: /*the getter function*/,</span></div><div class="line"><span class="comment">//   set: undefined</span></div><div class="line"><span class="comment">// &#125;</span></div><div class="line"></div><div class="line">o = &#123; <span class="attr">bar</span>: <span class="number">42</span> &#125;;</div><div class="line">d = <span class="built_in">Object</span>.getOwnPropertyDescriptor(o, <span class="string">"bar"</span>);</div><div class="line"><span class="comment">// d &#123;</span></div><div class="line"><span class="comment">//   configurable: true,</span></div><div class="line"><span class="comment">//   enumerable: true,</span></div><div class="line"><span class="comment">//   value: 42,</span></div><div class="line"><span class="comment">//   writable: true</span></div><div class="line"><span class="comment">// &#125;</span></div><div class="line"></div><div class="line">o = &#123;&#125;;</div><div class="line"><span class="built_in">Object</span>.defineProperty(o, <span class="string">"baz"</span>, &#123;</div><div class="line">  value: <span class="number">8675309</span>,</div><div class="line">  writable: <span class="literal">false</span>,</div><div class="line">  enumerable: <span class="literal">false</span></div><div class="line">&#125;);</div><div class="line">d = <span class="built_in">Object</span>.getOwnPropertyDescriptor(o, <span class="string">"baz"</span>);</div><div class="line"><span class="comment">// d &#123;</span></div><div class="line"><span class="comment">//   value: 8675309,</span></div><div class="line"><span class="comment">//   writable: false,</span></div><div class="line"><span class="comment">//   enumerable: false,</span></div><div class="line"><span class="comment">//   configurable: false</span></div><div class="line"><span class="comment">// &#125;</span></div></pre></td></tr></table></figure>
       
 
       
@@ -305,7 +304,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/03/13/js高级编程-5-5Function类型/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/03/16/js高级编程-6-1-理解JS中的对象/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -319,18 +318,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/03/16/js高级编程-6-1-理解JS中的对象/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/03/16/js高级编程-6-1-理解对象/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          理解JS中的对象
+          理解对象
         
       </div>
     </a>
   
   
-    <a href="/2018/03/05/js高级编程-5-2Array类型/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Array类型</div>
+    <a href="/2018/03/13/js高级编程-5-5Function类型/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Function类型</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -369,7 +368,7 @@
 <script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  id: "Function类型",
+  id: "理解JS中的对象",
   owner: 'Ccixyj',
   repo: 'Ccixyj.github.io',
   oauth: {
